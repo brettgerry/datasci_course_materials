@@ -1,0 +1,14 @@
+create view [term query] as SELECT * FROM Frequency UNION SELECT 'q' as docid, 'washington' as term, 1 as count UNION SELECT 'q' as docid, 'taxes' as term, 1 as count UNION SELECT 'q' as docid, 'treasury' as term, 1 as count;
+
+(select a1.term as simterm, (a1.count * a2.count) as simproduct from (select * from [term query]) as a1 join (select * from [term query] where docid="q") as a2 where a1.term = a2.term and a1.docid != a2.docid group by a1.term) as result;
+
+drop view [term query];
+
+
+create view [contains] as select * from [term query] where (term="washington" or term="taxes" or term="treasury") and docid!="q";
+
+
+select a1.term as simterm, (a1.count * a2.count) as simproduct from (select * from [term query]) as a1 join (select * from [term query]) as a2 where a1.term = a2.term and a1.docid != a2.docid group by a1.term;
+
+
+select * from (select * from [term query]) as a1 left outer join (select * from [term query] where docid="q") as a2 where a1.term = a2.term and a1.docid != a2.docid group by a1.term;

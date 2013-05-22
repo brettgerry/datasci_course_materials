@@ -1,0 +1,1 @@
+select sum(simproduct) from (select a1.term as simterm, (a1.count * a2.count) as simproduct from (select * from Frequency where docid="10080_txt_crude" or docid="17035_txt_earn") as a1 join (select * from Frequency where docid="10080_txt_crude" or docid="17035_txt_earn") as a2 where a1.term = a2.term and a1.docid != a2.docid group by a1.term) as result;
